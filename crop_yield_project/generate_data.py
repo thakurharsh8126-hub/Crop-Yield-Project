@@ -1,8 +1,4 @@
-"""
-generate_data.py
-Generates a synthetic but realistic crop yield dataset and saves it as CSV.
-Run this once before running the main app if crop_data.csv does not exist.
-"""
+
 
 import numpy as np
 import pandas as pd
