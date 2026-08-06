@@ -1,8 +1,4 @@
-"""
-model.py
-Trains a RandomForestRegressor to predict crop yield and exposes
-a CropYieldModel class used by the GUI.
-"""
+
 
 import os
 import pandas as pd
