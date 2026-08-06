@@ -1,18 +1,3 @@
-"""
-app.py
-Crop Yield Prediction - Desktop GUI Application
-=================================================
-A Tkinter-based GUI that:
-  1. Trains / loads a RandomForest model on crop_data.csv
-  2. Lets the user enter environmental factors and predicts crop yield
-  3. Shows visual analytics: pie chart, bar chart, scatter/line chart,
-     feature importance chart, and prediction-vs-actual chart.
-
-Run:
-    python3 app.py
-(Run generate_data.py first if crop_data.csv doesn't exist -- app.py
- will also auto-generate it if missing.)
-"""
 
 import os
 import sys
@@ -29,15 +14,11 @@ from matplotlib.figure import Figure
 
 from model import CropYieldModel, DATA_PATH
 
-# ---------------------------------------------------------------
-# Ensure data exists
-# ---------------------------------------------------------------
+
 if not os.path.exists(DATA_PATH):
     import generate_data  # noqa: F401  (running this module generates the CSV)
 
-# ---------------------------------------------------------------
-# Color palette
-# ---------------------------------------------------------------
+
 BG = "#0f172a"
 PANEL = "#1e293b"
 ACCENT = "#22c55e"
@@ -77,9 +58,7 @@ class CropYieldApp:
 
         self._build_layout()
 
-    # ---------------------------------------------------------------
-    # Layout
-    # ---------------------------------------------------------------
+    
     def _build_layout(self):
         # Header
         header = tk.Frame(self.root, bg=BG)
@@ -122,9 +101,7 @@ class CropYieldApp:
         self._build_dashboard_tab()
         self._build_model_tab()
 
-    # ---------------------------------------------------------------
-    # TAB 1: Prediction form + result chart
-    # ---------------------------------------------------------------
+    
     def _build_predict_tab(self):
         container = tk.Frame(self.predict_tab, bg=BG)
         container.pack(fill="both", expand=True)
@@ -398,9 +375,7 @@ class CropYieldApp:
         self.pred_fig.tight_layout()
         self.pred_canvas.draw()
 
-    # ---------------------------------------------------------------
-    # TAB 2: Data dashboard (multiple charts on dataset)
-    # ---------------------------------------------------------------
+    
     def _build_dashboard_tab(self):
         frame = tk.Frame(self.dashboard_tab, bg=BG)
         frame.pack(fill="both", expand=True)
@@ -455,9 +430,7 @@ class CropYieldApp:
         fig.tight_layout()
         canvas.draw()
 
-    # ---------------------------------------------------------------
-    # TAB 3: Model insights (feature importance + predicted vs actual)
-    # ---------------------------------------------------------------
+    
     def _build_model_tab(self):
         frame = tk.Frame(self.model_tab, bg=BG)
         frame.pack(fill="both", expand=True)
