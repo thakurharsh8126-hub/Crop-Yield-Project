@@ -106,17 +106,13 @@ class CropYieldApp:
         container = tk.Frame(self.predict_tab, bg=BG)
         container.pack(fill="both", expand=True)
 
-        # Left: form (fixed width panel that holds a scrollable area on top
-        # and a pinned action bar -- button + result -- at the bottom, so the
-        # button is ALWAYS visible no matter how tall the form content is
-        # or how small the window/screen is).
+        
         form_outer = tk.Frame(container, bg=PANEL)
         form_outer.pack(side="left", fill="y", padx=(0, 15), pady=10)
         form_outer.pack_propagate(False)
         form_outer.configure(width=340)
 
-        # --- Pinned action bar (packed BOTTOM first so it always reserves
-        # its space, regardless of how much content is above it) ---
+        
         action_bar = tk.Frame(form_outer, bg=PANEL, padx=25, pady=15)
         action_bar.pack(side="bottom", fill="x")
 
@@ -127,7 +123,7 @@ class CropYieldApp:
         )
         predict_btn.pack(fill="x")
 
-        # --- Large result box (shown after prediction) ---
+        
         self.result_box = tk.Frame(action_bar, bg="#0f2e1a", bd=0,
                                     highlightthickness=2, highlightbackground=ACCENT)
         self.result_box.pack(fill="x", pady=(12, 0))
@@ -167,7 +163,7 @@ class CropYieldApp:
         )
         self.result_interp_lbl.pack(anchor="w", pady=(8, 0))
 
-        # --- Scrollable form area (everything else) ---
+        
         scroll_container = tk.Frame(form_outer, bg=PANEL)
         scroll_container.pack(side="top", fill="both", expand=True)
 
@@ -242,7 +238,7 @@ class CropYieldApp:
                                   state="readonly", font=FONT)
         crop_menu.pack(fill="x", pady=(0, 10))
 
-        # Right: chart panel
+        
         chart_panel = tk.Frame(container, bg=PANEL)
         chart_panel.pack(side="left", fill="both", expand=True, pady=10)
 
@@ -257,13 +253,13 @@ class CropYieldApp:
         ax1 = self.pred_fig.add_subplot(211)
         ax2 = self.pred_fig.add_subplot(212)
 
-        # Bar: contribution factors (feature importance) as placeholder
+        
         fi = self.cy_model.feature_importance
         ax1.barh(fi.index[::-1], fi.values[::-1], color=PIE_COLORS)
         ax1.set_title("Feature Importance (Model-wide)")
         ax1.set_xlabel("Importance")
 
-        # Pie: crop distribution in dataset
+        
         counts = self.df["Crop_Type"].value_counts()
         ax2.pie(counts.values, labels=counts.index, autopct="%1.1f%%",
                 colors=PIE_COLORS, textprops={"color": TEXT})
@@ -327,7 +323,7 @@ class CropYieldApp:
                    f"or lower. Rainfall, temperature or fertilizer levels may be "
                    f"unfavorable for {crop} under these conditions.")
 
-        # Update box + text colors
+        
         self.result_box.configure(highlightbackground=color)
         for widget in (self.result_box,):
             widget.configure(bg=box_bg)
@@ -351,7 +347,7 @@ class CropYieldApp:
         ax1 = self.pred_fig.add_subplot(211)
         ax2 = self.pred_fig.add_subplot(212)
 
-        # Gauge-like bar comparing prediction to crop's average yield range
+        
         crop_df = self.df[self.df["Crop_Type"] == crop]["Yield_tons_per_ha"]
         avg = crop_df.mean()
         mx = crop_df.max()
@@ -365,8 +361,7 @@ class CropYieldApp:
             ax1.text(b.get_x() + b.get_width() / 2, h, f"{h:.2f}",
                       ha="center", va="bottom", color=TEXT, fontsize=9)
 
-        # Pie: relative contribution of factors for this specific prediction
-        # (normalized feature importance x this sample's magnitude, illustrative)
+        
         fi = self.cy_model.feature_importance
         ax2.pie(fi.values, labels=fi.index, autopct="%1.1f%%",
                 colors=PIE_COLORS, textprops={"color": TEXT, "fontsize": 8})
@@ -386,42 +381,42 @@ class CropYieldApp:
 
         df = self.df
 
-        # 1. Pie chart - Soil type distribution
+        
         ax1 = fig.add_subplot(231)
         soil_counts = df["Soil_Type"].value_counts()
         ax1.pie(soil_counts.values, labels=soil_counts.index, autopct="%1.0f%%",
                 colors=PIE_COLORS, textprops={"color": TEXT, "fontsize": 8})
         ax1.set_title("Soil Type Distribution", fontsize=10)
 
-        # 2. Bar chart - Avg yield by crop
+        
         ax2 = fig.add_subplot(232)
         avg_yield = df.groupby("Crop_Type")["Yield_tons_per_ha"].mean().sort_values()
         ax2.barh(avg_yield.index, avg_yield.values, color=ACCENT2)
         ax2.set_title("Avg Yield by Crop", fontsize=10)
         ax2.set_xlabel("tons/ha", fontsize=8)
 
-        # 3. Scatter - Rainfall vs Yield
+       
         ax3 = fig.add_subplot(233)
         ax3.scatter(df["Rainfall_mm"], df["Yield_tons_per_ha"], s=6, alpha=0.4, color=ACCENT)
         ax3.set_title("Rainfall vs Yield", fontsize=10)
         ax3.set_xlabel("Rainfall (mm)", fontsize=8)
         ax3.set_ylabel("Yield (t/ha)", fontsize=8)
 
-        # 4. Scatter - Temperature vs Yield
+        
         ax4 = fig.add_subplot(234)
         ax4.scatter(df["Temperature_C"], df["Yield_tons_per_ha"], s=6, alpha=0.4, color="#f59e0b")
         ax4.set_title("Temperature vs Yield", fontsize=10)
         ax4.set_xlabel("Temperature (°C)", fontsize=8)
         ax4.set_ylabel("Yield (t/ha)", fontsize=8)
 
-        # 5. Bar - Avg yield by soil type
+        
         ax5 = fig.add_subplot(235)
         soil_yield = df.groupby("Soil_Type")["Yield_tons_per_ha"].mean().sort_values()
         ax5.bar(soil_yield.index, soil_yield.values, color="#a78bfa")
         ax5.set_title("Avg Yield by Soil Type", fontsize=10)
         ax5.tick_params(axis="x", rotation=30, labelsize=7)
 
-        # 6. Histogram - Yield distribution
+        
         ax6 = fig.add_subplot(236)
         ax6.hist(df["Yield_tons_per_ha"], bins=25, color=ACCENT, edgecolor=BG)
         ax6.set_title("Yield Distribution", fontsize=10)
@@ -447,14 +442,14 @@ class CropYieldApp:
         canvas = FigureCanvasTkAgg(fig, master=frame)
         canvas.get_tk_widget().pack(fill="both", expand=True, padx=10, pady=10)
 
-        # Feature importance bar
+        
         ax1 = fig.add_subplot(121)
         fi = self.cy_model.feature_importance.sort_values()
         ax1.barh(fi.index, fi.values, color=PIE_COLORS)
         ax1.set_title("Feature Importance")
         ax1.set_xlabel("Importance Score")
 
-        # Predicted vs Actual scatter
+        
         ax2 = fig.add_subplot(122)
         ax2.scatter(self.cy_model.y_test, self.cy_model.preds, s=10, alpha=0.5, color=ACCENT2)
         lims = [0, max(self.cy_model.y_test.max(), self.cy_model.preds.max()) + 0.5]
