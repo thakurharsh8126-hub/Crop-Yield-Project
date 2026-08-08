@@ -7,9 +7,7 @@ import matplotlib.pyplot as plt
 from model import CropYieldModel, DATA_PATH
 
 
-# ---------------------------------------------------------
-# Page Configuration
-# ---------------------------------------------------------
+
 st.set_page_config(
     page_title="Crop Yield Prediction System",
     page_icon="🌾",
@@ -18,9 +16,7 @@ st.set_page_config(
 )
 
 
-# ---------------------------------------------------------
-# Custom CSS
-# ---------------------------------------------------------
+
 st.markdown(
     """
     <style>
@@ -91,16 +87,13 @@ st.markdown(
 )
 
 
-# ---------------------------------------------------------
-# Generate dataset if it does not exist
-# ---------------------------------------------------------
+
+
 if not os.path.exists(DATA_PATH):
     import generate_data  # noqa: F401
 
 
-# ---------------------------------------------------------
-# Load model only once
-# ---------------------------------------------------------
+
 @st.cache_resource
 def load_model():
     model = CropYieldModel()
