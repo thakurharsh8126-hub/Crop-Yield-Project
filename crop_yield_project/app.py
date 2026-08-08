@@ -158,9 +158,7 @@ predict_tab, dashboard_tab, model_tab = st.tabs(
 )
 
 
-# =========================================================
-# PREDICTION TAB
-# =========================================================
+
 with predict_tab:
 
     st.subheader("Enter Field Conditions")
