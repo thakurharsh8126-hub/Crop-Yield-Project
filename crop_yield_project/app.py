@@ -111,9 +111,7 @@ except Exception as e:
     st.stop()
 
 
-# ---------------------------------------------------------
-# Header
-# ---------------------------------------------------------
+
 st.markdown(
     '<div class="main-title">🌾 Crop Yield Prediction System</div>',
     unsafe_allow_html=True
@@ -125,9 +123,7 @@ st.markdown(
 )
 
 
-# ---------------------------------------------------------
-# Model Metrics
-# ---------------------------------------------------------
+
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -152,9 +148,7 @@ with col3:
 st.divider()
 
 
-# ---------------------------------------------------------
-# Tabs
-# ---------------------------------------------------------
+
 predict_tab, dashboard_tab, model_tab = st.tabs(
     [
         "🔮 Predict Yield",
